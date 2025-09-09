@@ -1,223 +1,159 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" type="image/png" href="logo2.png" />
-    <title>Natabari Crispi Biriyani</title>
-    <style>
-        body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            overflow: hidden; /* This line disables all scrolling */
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center; /* Centers all contents vertically */
-            height: 100vh; /* Ensures the page fills the entire screen height */
-            background-color: #f0f0f0;
-            background-image: linear-gradient(
-                45deg,
-                rgba(255, 165, 0, 0.2) 25%,
-                transparent 25%,
-                transparent 75%,
-                rgba(255, 165, 0, 0.2) 75%
-            ),
-            linear-gradient(
-                -45deg,
-                rgba(255, 69, 0, 0.2) 25%,
-                transparent 25%,
-                transparent 75%,
-                rgba(255, 69, 0, 0.2) 75%
-            );
-            background-size: 40px 40px;
-            animation: moveGrid 20s linear infinite;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/png" href="logo2.png" />
+<title>Natabari Crispi Biriyani</title>
+<style>
+    html, body {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        height: 100%;
+        overflow: hidden; /* ✅ No scrollbars at all */
+    }
 
-        @keyframes moveGrid {
-            from {
-                background-position: 0 0;
-            }
-            to {
-                background-position: 40px 40px;
-            }
-        }
+    body {
+        font-family: Arial, sans-serif;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+        padding-top: 3vh;
+        background-color: #f0f0f0;
+        background-image: linear-gradient(
+            45deg,
+            rgba(255, 165, 0, 0.2) 25%,
+            transparent 25%,
+            transparent 75%,
+            rgba(255, 165, 0, 0.2) 75%
+        ),
+        linear-gradient(
+            -45deg,
+            rgba(255, 69, 0, 0.2) 25%,
+            transparent 25%,
+            transparent 75%,
+            rgba(255, 69, 0, 0.2) 75%
+        );
+        background-size: 40px 40px;
+        animation: moveGrid 20s linear infinite;
+    }
 
-      .content-wrapper {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start; /* पहले center था */
-    width: 95%;
-    box-sizing: border-box;
-    padding: 2vh 1vw; /* थोड़ा ऊपर space के लिए */
-    margin-top: 3vh;  /* Extra margin top से content ऊपर आएगा */
-}
+    @keyframes moveGrid {
+        from { background-position: 0 0; }
+        to { background-position: 40px 40px; }
+    }
 
+    .content-wrapper {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 95%;
+        box-sizing: border-box;
+        padding: 1vh 1vw;
+        max-height: 100%; /* ✅ Ensures no overflow */
+    }
 
-        .brand-name {
-            font-size: clamp(1.5rem, 6vw, 3rem);
-            color: #333;
-            text-align: center;
-            font-weight: bold;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
-            padding: 0.5vh 1vw;
-            background-color: rgba(255, 255, 255, 0.9);
-            border-radius: 8px;
-            white-space: nowrap;
-            overflow: hidden;
-            animation: glow 1.5s infinite alternate;
-            margin-top: 25px;
-            margin-bottom: 0.5vh;
-        }
+    .brand-name {
+        font-size: clamp(1.5rem, 6vw, 3rem);
+        color: #333;
+        text-align: center;
+        font-weight: bold;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        padding: 0.5vh 1vw;
+        background-color: rgba(255, 255, 255, 0.9);
+        border-radius: 8px;
+        animation: glow 1.5s infinite alternate;
+        margin-bottom: 1vh;
+    }
 
-        @keyframes glow {
-            from {
-                box-shadow: 0 0 5px rgba(255, 165, 0, 0.7), 0 0 10px rgba(255, 165, 0, 0.5);
-            }
-            to {
-                box-shadow: 0 0 10px rgba(255, 165, 0, 0.9), 0 0 20px rgba(255, 165, 0, 0.7);
-            }
-        }
+    @keyframes glow {
+        from { box-shadow: 0 0 5px rgba(255, 165, 0, 0.7); }
+        to { box-shadow: 0 0 20px rgba(255, 165, 0, 0.9); }
+    }
 
-        .menu-image-container {
-            flex-grow: 1;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            width: 100%;
-            padding: 0.5vh;
-            margin-bottom: 0.5vh;
-        }
+    .menu-image-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        padding: 0.5vh;
+        margin-bottom: 1vh;
+    }
 
-        .menu-image {
-            max-height: 70vh; /* Limits max height for better fit */
-            max-width: 100%;
-            height: auto;
-            display: block;
-            border-radius: 10px;
-        }
-        
-        .share-button {
-            background-color: #4CAF50;
-            color: white;
-            padding: 1.5vh 3vw;
-            text-align: center;
-            text-decoration: none;
-            font-size: clamp(0.9rem, 3.5vw, 1.1rem);
-            margin-top: 0.5vh;
-            margin-bottom: 0.5vh;
-            cursor: pointer;
-            border-radius: 8px;
-            border: none;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            transition: background-color 0.3s ease;
-        }
+    .menu-image {
+        max-height: 65vh; /* ✅ Resized for no overflow */
+        max-width: 100%;
+        height: auto;
+        display: block;
+        border-radius: 10px;
+    }
 
-        .share-button:hover {
-            background-color: #45a049;
-        }
+    .share-button {
+        background: #ff4500;
+        color: #fff;
+        font-size: 1rem;
+        font-weight: bold;
+        padding: 12px 28px;
+        border: none;
+        border-radius: 50px;
+        cursor: pointer;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        animation: neonPulse 1.5s infinite alternate;
+        box-shadow: 0 0 10px #ff4500, 0 0 20px #ff4500;
+        margin-bottom: 0.5vh;
+    }
 
-        .note {
-    font-size: clamp(0.8rem, 3vw, 1rem);
-    color: #555;
-    text-align: center;
-    margin-top: 0.5vh;
-    margin-bottom: 0;
-    padding: 0.5vh 1vw;
-    background-color: rgba(255, 255, 255, 0.9);
-    border-radius: 8px;
-    border-left: 5px solid #ff6347;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    animation: borderGlow 2s infinite;
-}
+    @keyframes neonPulse {
+        0% { box-shadow: 0 0 10px #ff4500, 0 0 20px #ff4500; }
+        100% { box-shadow: 0 0 20px #ff6347, 0 0 40px #ff4500; }
+    }
 
-@keyframes borderGlow {
-    0% { border-left-color: #ff6347; box-shadow: 0 0 8px #ff6347; }
-    50% { border-left-color: #ff0000; box-shadow: 0 0 18px #ff0000; }
-    100% { border-left-color: #ff6347; box-shadow: 0 0 8px #ff6347; }
-}
+    .note {
+        font-size: clamp(0.8rem, 3vw, 1rem);
+        color: #555;
+        text-align: center;
+        margin-top: 0.5vh;
+        padding: 0.5vh 1vw;
+        background-color: rgba(255, 255, 255, 0.9);
+        border-radius: 8px;
+        border-left: 5px solid #ff6347;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        animation: borderGlow 2s infinite;
+    }
 
-.share-button {
-    background: #ff4500;
-    color: #fff;
-    font-size: 1.0rem;
-    font-weight: bold;
-    padding: 12px 28px;
-    border: none;
-    border-radius: 50px;
-    cursor: pointer;
-    position: relative;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    animation: neonPulse 1.5s infinite alternate;
-    box-shadow: 0 0 10px #ff4500, 0 0 20px #ff4500;
-}
-
-@keyframes neonPulse {
-    0% { box-shadow: 0 0 10px #ff4500, 0 0 20px #ff4500; }
-    100% { box-shadow: 0 0 20px #ff6347, 0 0 40px #ff4500; }
-}
-
-.share-button::after {
-    content: "";
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-    border-radius: 50px;
-    border: 2px solid rgba(255, 255, 255, 0.5);
-    animation: ripple 2s infinite;
-}
-
-@keyframes ripple {
-    0% { transform: scale(1); opacity: 1; }
-    100% { transform: scale(1.5); opacity: 0; }
-}
-
-    </style>
+    @keyframes borderGlow {
+        0% { border-left-color: #ff6347; box-shadow: 0 0 8px #ff6347; }
+        50% { border-left-color: #ff0000; box-shadow: 0 0 18px #ff0000; }
+        100% { border-left-color: #ff6347; box-shadow: 0 0 8px #ff6347; }
+    }
+</style>
 </head>
 <body>
-
 <div class="content-wrapper">
     <h1 class="brand-name">_Natabari Crispi Biriyani_</h1>
-    
     <div class="menu-image-container">
         <img src="menu.png" alt="Natabari Crispi Biriyani Menu" class="menu-image">
     </div>
-    
-    <button class="share-button" onclick="shareMenu()">Share Menu</button></br>
-    
+    <button class="share-button" onclick="shareMenu()">Share Menu</button><br>
     <p class="note"><b>Note:</b> শুধু বিরিয়ানি আইটেম এর জন্য ফেইসবুক আর হোয়াটস্যাপ এ স্টেটাস দিলে কোল্ডড্রিঙ্কস ফ্রি!🤩😋</p>
-<p style="
-    font-family: 'Dancing Script', cursive;
-    font-size: 1rem;
-    color: #ff1493;
-    text-align: center;
-    margin-top: 2px;">
-🌸 Crafted with Care by Akash Sarkar 🌸
-</p>
+    <p style="font-family: 'Dancing Script', cursive; font-size: 1rem; color: #ff1493; text-align: center; margin-top: 2px;">
+    🌸 Crafted with Care by Akash Sarkar 🌸
+    </p>
 </div>
-
 <script>
-    function shareMenu() {
-        const menuTitle = "Natabari Crispi Biriyani Menu!";
-        const menuUrl = window.location.href;
-
-        if (navigator.share) {
-            navigator.share({
-                title: menuTitle,
-                text: "Check out the delicious menu from Natabari Crispi Biriyani!",
-                url: menuUrl
-            }).then(() => {
-                console.log('Thanks for sharing!');
-            }).catch(console.error);
-        } else {
-            alert("To share, please copy this link and paste it on your social media: " + menuUrl);
-        }
+function shareMenu() {
+    const menuTitle = "Natabari Crispi Biriyani Menu!";
+    const menuUrl = window.location.href;
+    if (navigator.share) {
+        navigator.share({title: menuTitle,text: "Check out the delicious menu from Natabari Crispi Biriyani!",url: menuUrl})
+        .then(() => console.log('Thanks for sharing!')).catch(console.error);
+    } else {
+        alert("To share, please copy this link and paste it on your social media: " + menuUrl);
     }
+}
 </script>
-
 </body>
 </html>
