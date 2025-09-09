@@ -89,6 +89,13 @@
         display: block;
         border-radius: 10px;
     }
+    @media (max-width: 400px) {
+    .menu-image {
+        width: 92%;   /* Adjust for very small phones */
+        max-width: 92%;
+    }
+}
+
 
     .share-button {
         background: #ff4500;
@@ -112,10 +119,10 @@
     }
 
     .note {
-        font-size: clamp(0.8rem, 3vw, 1rem);
+        font-size: clamp(0.4rem, 3vw, 1rem);
         color: #555;
         text-align: center;
-        margin-top: 0.5vh;
+        margin-top: 0.1vh;
         padding: 0.5vh 1vw;
         background-color: rgba(255, 255, 255, 0.9);
         border-radius: 8px;
