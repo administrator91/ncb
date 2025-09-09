@@ -43,16 +43,17 @@
             }
         }
 
-        .content-wrapper {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            width: 95%; /* Adjust width for better fit on all devices */
-           
-            box-sizing: border-box;
-            padding: 0.5vh 1vw; /* Minimized padding */
-        }
+      .content-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start; /* पहले center था */
+    width: 95%;
+    box-sizing: border-box;
+    padding: 2vh 1vw; /* थोड़ा ऊपर space के लिए */
+    margin-top: 3vh;  /* Extra margin top से content ऊपर आएगा */
+}
+
 
         .brand-name {
             font-size: clamp(1.5rem, 6vw, 3rem);
