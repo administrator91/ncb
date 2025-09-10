@@ -150,6 +150,42 @@
     🌸 Crafted with Care by Akash Sarkar 🌸
     </p>
 </div>
+    <script>
+function shareMenu() {
+    const menuTitle = "🍴 Natabari Crispi Biriyani 🍴";
+    const menuUrl = window.location.href;
+
+    const messages = [
+        "✨ Every bite is a journey, every spice a story. Discover the magic of Natabari Crispi Biriyani 🍗💫",
+        "🌟 Experience biriyani that’s fit for kings! Natabari Crispi Biriyani – because you deserve the royal taste 🍴💎",
+        "🔥 Warning: One plate of Natabari Crispi Biriyani may cause extreme cravings & unlimited smiles 😋💛",
+        "🍗 Your taste buds called… they’re begging for Natabari Crispi Biriyani 🤤✨",
+        "❤️ Dil ka sukoon + pet ka pyaar = Natabari Crispi Biriyani! Ek baar khaoge, bhool nahi paoge 🔥",
+        "🌿 More than food, it’s a feeling. Natabari Crispi Biriyani – where love meets flavor 🍴✨",
+        "⚡ Mood off? Don’t worry – one bite of Natabari Crispi Biriyani = mood set 🔥💯",
+        "💫 Not just a meal, it’s an unforgettable memory. Natabari Crispi Biriyani 🥘✨",
+        "😋 Flavors so rich, they’ll melt your heart. Taste happiness at Natabari Crispi Biriyani 💛🔥",
+        "🌸 Biriyani that speaks the language of love 💌 Natabari Crispi Biriyani – share the magic today 🍽️",
+        "🥘 One plate, endless happiness. Share the joy of Natabari Crispi Biriyani ✨❤️"
+    ];
+
+    const randomMessage = messages[Math.floor(Math.random() * messages.length)];
+
+    if (navigator.share) {
+        navigator.share({
+            title: menuTitle,
+            text: randomMessage,
+            url: menuUrl
+        })
+        .then(() => console.log("Shared successfully 💌"))
+        .catch(console.error);
+    } else {
+        alert("💫 Share the flavor! Copy this link → " + menuUrl);
+    }
+}
+</script>
+    
+<!--
 <script>
 function shareMenu() {
     const menuTitle = "Natabari Crispi Biriyani Menu!";
@@ -162,5 +198,8 @@ function shareMenu() {
     }
 }
 </script>
+    -->
+    
 </body>
 </html>
+
