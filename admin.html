@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Natabari Crispi Biriyani - Lucky Draw</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Teko:wght@600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      overflow: hidden;
+      background: #111;
+      color: #e0e0e0;
+      height: 100vh;
+    }
+    .main-container {
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      height:100vh;
+      width:100vw;
+      padding:1rem;
+      background-image:linear-gradient(rgba(0,0,0,0.7),rgba(0,0,0,0.7)), url('https://static.vecteezy.com/system/resources/thumbnails/049/931/259/small_2x/clay-bowl-of-chicken-biryani-topped-with-spices-viewed-from-above-photo.jpeg');
+      background-size:cover;
+      background-position:center;
+    }
+    .card {
+      background-color: rgba(22,36,71,0.9);
+      border:1px solid #fca311;
+      border-radius:1rem;
+      box-shadow:0 10px 35px rgba(252,163,17,0.2);
+      width:100%;
+      max-width:450px;
+      backdrop-filter: blur(10px);
+      animation: fadeIn .5s ease-out;
+    }
+    @keyframes fadeIn { from{opacity:0;transform:scale(.95)} to{opacity:1;transform:scale(1)} }
+    .brand-name { font-family:'Teko',sans-serif; color:#fca311; letter-spacing:2px; }
+    .btn { transition:all .3s ease; box-shadow:0 4px 6px rgba(0,0,0,.4); text-transform:uppercase; letter-spacing:1px; }
+    .btn:hover { transform:translateY(-3px) scale(1.05); box-shadow:0 8px 15px rgba(0,0,0,.5); }
+    .btn:disabled { opacity:.5; cursor:not-allowed; transform:none; box-shadow:none; }
+    .wheel-container {
+      position:relative;
+      width:85vw;
+      height:85vw;
+      max-width:400px;
+      max-height:400px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
+    #wheel {
+      /* default transition will be overridden inline at spin time; keep a short default */
+      transition: transform 0.2s linear;
+      width:100%;
+      height:100%;
+    }
+    html, body {
+  overflow: hidden;
+  height: 100%;
+}
+
+    .pointer {
+      position:absolute;
+      top:-10px;
+      left:50%;
+      transform:translateX(-50%);
+      width:0;height:0;
+      border-left:25px solid transparent;
+      border-right:25px solid transparent;
+      border-top:40px solid #fca311;
+      z-index:10;
+      filter:drop-shadow(0 2px 4px rgba(0,0,0,.5));
+    }
+    .winner-modal {
+      position:fixed; top:0; left:0; width:100%; height:100%;
+      background:rgba(0,0,0,.8);
+      display:flex; align-items:center; justify-content:center;
+      z-index:100; backdrop-filter: blur(5px);
+      opacity:0; pointer-events:none; transition:opacity .5s ease;
+    }
+    .winner-modal.show { opacity:1; pointer-events:auto; }
+    .confetti-container { position:absolute; top:0; left:0; width:100%; height:100%; overflow:hidden; pointer-events:none; }
+    .confetti { position:absolute; width:10px; height:10px; opacity:0; animation:confetti-fall 3s ease-out forwards; }
+    @keyframes confetti-fall { 0%{transform:translateY(-100px) rotateZ(0deg); opacity:1} 100%{transform:translateY(100vh) rotateZ(720deg); opacity:0} }
+    .message-box{ min-height:24px; text-align:center; font-weight:bold; transition:opacity .5s; }
+    .message-box.error{ color:#f87171 } .message-box.success{ color:#4ade80 }
+  </style>
+</head>
+<body class="bg-gray-900">
+
+  <div class="main-container">
+    <div id="player-entry-section" class="card p-4 sm:p-6 flex flex-col max-h-[95vh] overflow-hidden">
+      <div>
+        <div class="text-center mb-2 sm:mb-4">
+          <h2 class="text-3xl sm:text-4xl brand-name">_Natabari Crispi Biriyani_</h2>
+          <p class="text-xs sm:text-sm text-gray-300">Daily Lucky Draw🤩</p>
+        </div>
+
+        <div class="text-center bg-black/30 p-2 rounded-lg mb-2 sm:mb-4">
+          <p class="text-xs sm:text-sm text-gray-200">Har roz raat 8 baje hoga lucky spin! Jeetne wale ko milega ek full plate <strong class="text-yellow-400">FREE Chicken Biriyani with Egg!</strong></p>
+          <p class="text-xs text-gray-400 mt-1">Entry Fee: Rs. 10</p>
+        </div>
+
+        <form id="player-form" class="space-y-2">
+          <div class="message-box" id="message-box"></div>
+
+          <div>
+            <label for="name" class="block text-xs sm:text-sm font-medium text-gray-300">Name</label>
+            <input id="name" type="text" required class="mt-1 block w-full bg-gray-700/50 border-gray-600 text-white rounded-md shadow-sm p-2 text-sm" />
+          </div>
+
+          <div>
+            <label for="phone" class="block text-xs sm:text-sm font-medium text-gray-300">Phone Number (Unique)</label>
+            <input id="phone" type="tel" required class="mt-1 block w-full bg-gray-700/50 border-gray-600 text-white rounded-md shadow-sm p-2 text-sm" />
+          </div>
+
+          <div>
+            <label for="gender" class="block text-xs sm:text-sm font-medium text-gray-300">Gender</label>
+            <select id="gender" class="mt-1 block w-full bg-gray-700/50 border-gray-600 text-white rounded-md shadow-sm p-2 text-sm">
+              <option>Male</option><option>Female</option><option>Other</option>
+            </select>
+          </div>
+
+          <button type="submit" class="w-full btn bg-yellow-600 hover:bg-yellow-500 text-black font-bold py-2 px-4 rounded-lg !mt-3">Add Player</button>
+        </form>
+      </div>
+
+      <div class="mt-3 flex-1 min-h-0">
+        <h2 class="text-base sm:text-lg font-semibold text-white">Players Added: <span id="player-count">0</span></h2>
+        <!-- scrollable box for player names -->
+        <div class="bg-gray-800/50 rounded-md p-2 h-40 overflow-y-auto">
+          <ul id="player-list" class="text-gray-300 text-sm space-y-1"></ul>
+        </div>
+      </div>
+
+      <div class="mt-3 flex justify-end shrink-0">
+        <button id="next-button" class="btn bg-green-600 hover:bg-green-500 text-white font-bold py-2 px-4 rounded-lg text-sm sm:text-base" disabled>Go to Wheel</button>
+      </div>
+    </div>
+
+    <div id="wheel-section" class="hidden flex-col items-center justify-center space-y-4 text-center w-full h-full">
+      <h1 class="text-4xl sm:text-5xl font-bold text-white brand-name animate-pulse">It's Lottery Time!</h1>
+      <div class="wheel-container">
+        <div class="pointer"></div>
+        <canvas id="wheel"></canvas>
+      </div>
+      <p id="wheel-message" class="text-xs text-gray-400 h-4"></p>
+      <div class="flex space-x-4">
+        <button id="back-button" class="btn bg-gray-500 hover:bg-gray-600 text-white font-bold py-3 px-6 rounded-lg">Back</button>
+        <button id="spin-button" class="btn bg-red-600 hover:bg-red-500 text-white font-bold py-3 px-6 rounded-lg text-lg animate-pulse">SPIN!</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="winner-modal" class="winner-modal">
+    <div class="confetti-container"></div>
+    <div class="card text-center relative z-10 w-full max-w-md p-6 sm:p-8">
+      <h2 class="text-4xl sm:text-5xl font-bold text-yellow-400 animate-pulse mb-4 brand-name">Congratulations!</h2>
+      <div id="winner-details" class="text-white space-y-2 text-lg"></div>
+      <button id="home-reset-button" class="mt-6 btn bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-2 px-4 rounded-lg">Home & Reset</button>
+    </div>
+  </div>
+
+  <footer class="fixed bottom-0 left-0 w-full text-center p-2 text-xs text-gray-500">Developed with ❤️ by Akash Sarkar</footer>
+
+  <script>
+    // ---- DOM ----
+    const playerEntrySection = document.getElementById('player-entry-section');
+    const wheelSection = document.getElementById('wheel-section');
+    const playerForm = document.getElementById('player-form');
+    const nameInput = document.getElementById('name');
+    const phoneInput = document.getElementById('phone');
+    const genderInput = document.getElementById('gender');
+    const playerList = document.getElementById('player-list');
+    const playerCountSpan = document.getElementById('player-count');
+    const nextButton = document.getElementById('next-button');
+    const backButton = document.getElementById('back-button');
+    const spinButton = document.getElementById('spin-button');
+    const wheelCanvas = document.getElementById('wheel');
+    const wheelContainer = document.querySelector('.wheel-container');
+    const winnerModal = document.getElementById('winner-modal');
+    const winnerDetails = document.getElementById('winner-details');
+    const homeResetButton = document.getElementById('home-reset-button');
+    const confettiContainer = winnerModal.querySelector('.confetti-container');
+    const messageBox = document.getElementById('message-box');
+    const wheelMessage = document.getElementById('wheel-message');
+
+    const ctx = wheelCanvas.getContext('2d');
+
+    // ---- Data / State ----
+    let players = [];
+    let isSpinning = false;
+    let currentSpin = null; // used to store spin details and fallback timeout
+
+    const colors = ["#f87171","#fb923c","#facc15","#a3e635","#4ade80","#34d399","#22d3ee","#60a5fa","#a78bfa","#f472b6"];
+    const MAX_NAMES_ON_WHEEL = 20;
+
+    // ---- Utility ----
+    function showMessage(msg, type='success') {
+      messageBox.textContent = msg;
+      messageBox.className = `message-box ${type}`;
+      setTimeout(()=> { if(messageBox.textContent === msg) messageBox.textContent = ''; }, 3000);
+    }
+
+    // ---- Storage ----
+    function loadPlayersFromStorage(){
+      const s = localStorage.getItem('lotteryPlayers');
+      if(s) { players = JSON.parse(s); updatePlayerList(); }
+    }
+    function savePlayersToStorage(){
+      localStorage.setItem('lotteryPlayers', JSON.stringify(players));
+    }
+
+    // ---- Player list UI ----
+    function updatePlayerList(){
+      playerList.innerHTML = '';
+      players.forEach((p,i)=>{
+        const li = document.createElement('li');
+        li.className = "border-b border-gray-700 py-1 text-sm";
+        li.textContent = `${i+1}. ${p.name}`;
+        playerList.appendChild(li);
+      });
+      playerCountSpan.textContent = players.length;
+      nextButton.disabled = players.length < 2;
+
+      // if wheel visible, redraw
+      if (!wheelSection.classList.contains('hidden')) {
+        drawWheel();
+      }
+    }
+
+    function handleAddPlayer(e){
+      e.preventDefault();
+      const name = nameInput.value.trim();
+      const phone = phoneInput.value.trim();
+      if(!name || !phone){ showMessage('Please fill all fields.', 'error'); return; }
+      if(players.some(p => p.phone === phone)){ showMessage('Phone number already registered.', 'error'); return; }
+      players.push({ name, phone, gender: genderInput.value });
+      savePlayersToStorage();
+      updatePlayerList();
+      playerForm.reset();
+      showMessage('Player added successfully!');
+    }
+
+    // ---- Navigation ----
+    function showWheelSection(){
+      playerEntrySection.classList.add('hidden');
+      wheelSection.classList.remove('hidden');
+      wheelSection.classList.add('flex');
+      resizeCanvas();
+    }
+    function showPlayerEntrySection(){
+      wheelSection.classList.add('hidden');
+      wheelSection.classList.remove('flex');
+      playerEntrySection.classList.remove('hidden');
+    }
+
+    // ---- Canvas drawing ----
+    function resizeCanvas(){
+      const size = Math.min(wheelContainer.clientWidth, wheelContainer.clientHeight);
+      wheelCanvas.width = size;
+      wheelCanvas.height = size;
+      drawWheel();
+    }
+
+    function drawWheel(){
+      const numSegments = players.length;
+      if(numSegments === 0) return;
+
+      if(numSegments > MAX_NAMES_ON_WHEEL) {
+        wheelMessage.textContent = "Player names hidden for clarity.";
+      } else {
+        wheelMessage.textContent = "";
+      }
+
+      const anglePerSegment = (2 * Math.PI) / numSegments;
+      const centerX = wheelCanvas.width / 2;
+      const centerY = wheelCanvas.height / 2;
+      const radius = wheelCanvas.width / 2 - 5;
+
+      ctx.clearRect(0,0,wheelCanvas.width,wheelCanvas.height);
+      ctx.font = `${Math.max(10, radius * 0.08)}px Poppins, sans-serif`;
+      ctx.textBaseline = 'middle';
+      ctx.textAlign = 'center';
+
+      players.forEach((player, i) => {
+        const startAngle = i * anglePerSegment;
+        const endAngle = startAngle + anglePerSegment;
+        ctx.beginPath();
+        ctx.moveTo(centerX, centerY);
+        ctx.arc(centerX, centerY, radius, startAngle, endAngle);
+        ctx.closePath();
+        ctx.fillStyle = colors[i % colors.length];
+        ctx.fill();
+        ctx.strokeStyle = '#111';
+        ctx.lineWidth = 4;
+        ctx.stroke();
+
+        if (numSegments <= MAX_NAMES_ON_WHEEL) {
+          ctx.save();
+          ctx.fillStyle = '#000';
+          const textAngle = startAngle + anglePerSegment / 2;
+          ctx.translate(centerX + Math.cos(textAngle) * (radius * 0.6), centerY + Math.sin(textAngle) * (radius * 0.6));
+          ctx.rotate(textAngle + Math.PI / 2);
+          const displayName = player.name.length > 10 ? player.name.substring(0, 9) + '...' : player.name;
+          ctx.fillText(displayName, 0, 0);
+          ctx.restore();
+        }
+      });
+    }
+
+    // ---- Spinning with correct winner mapping ----
+    // Pointer is at top (which corresponds to 270deg in canvas coords).
+    function spinWheel(){
+      if (isSpinning || players.length < 2) return;
+      isSpinning = true;
+      spinButton.disabled = true;
+      backButton.disabled = true;
+
+      const degreesPerSegment = 360 / players.length;
+
+      // choose a random final angle (we'll do many full rotations + a random offset)
+      const randomAngle = Math.random() * 360; // final offset inside circle
+      const fullSpins = 50; // keep high so animation lasts 60s
+      const totalRotationDegrees = (360 * fullSpins) + randomAngle; // total degrees to rotate clockwise
+
+      // set a long transition (60s)
+      wheelCanvas.style.transition = 'transform 60s cubic-bezier(0.2, 0.8, 0.2, 1)';
+      wheelCanvas.style.transform = `rotate(${totalRotationDegrees}deg)`;
+
+      // store spin info so transitionend handler can compute winner
+      if (currentSpin && currentSpin.fallbackTimeout) {
+        clearTimeout(currentSpin.fallbackTimeout);
+      }
+      currentSpin = {
+        totalRotationDegrees,
+        degreesPerSegment
+      };
+
+      // Handler for when CSS transform transition finishes
+      const onTransitionEnd = (ev) => {
+        if (ev.propertyName !== 'transform') return;
+        // remove listener immediately
+        wheelCanvas.removeEventListener('transitionend', onTransitionEnd);
+
+        // clear fallback
+        if (currentSpin && currentSpin.fallbackTimeout) {
+          clearTimeout(currentSpin.fallbackTimeout);
+        }
+
+        // Compute the final (mod 360) rotation
+        const currentRotation = currentSpin.totalRotationDegrees % 360; // 0-359.999...
+
+        // pointer at top = 270deg in wheel's coordinate system
+        // the angle (in wheel's original coords) that is currently at the pointer is:
+        // pointerAngleInWheel = (270 - currentRotation) mod 360
+        let pointerAngle = (270 - currentRotation) % 360;
+        if (pointerAngle < 0) pointerAngle += 360;
+
+        // determine which segment the pointerAngle falls into
+        let winnerIndex = Math.floor(pointerAngle / currentSpin.degreesPerSegment);
+        // safe modulo
+        winnerIndex = ((winnerIndex % players.length) + players.length) % players.length;
+
+        const winner = players[winnerIndex];
+
+        // show result
+        showWinner(winner);
+
+        // cleanup
+        isSpinning = false;
+        spinButton.disabled = false;
+        backButton.disabled = false;
+
+        // lock wheel to the final rotation (avoid floating transition)
+        wheelCanvas.style.transition = 'none';
+        wheelCanvas.style.transform = `rotate(${currentRotation}deg)`;
+
+        currentSpin = null;
+      };
+
+      // Add listener
+      wheelCanvas.addEventListener('transitionend', onTransitionEnd);
+
+      // Fallback in case transitionend doesn't fire (e.g., tab hidden), call after 61s
+      currentSpin.fallbackTimeout = setTimeout(() => {
+        // emulate transitionend if still spinning
+        if (currentSpin) {
+          onTransitionEnd({ propertyName: 'transform' });
+        }
+      }, 61000); // slightly > 60s
+    }
+
+    // ---- Winner UI + confetti ----
+    function showWinner(winner){
+      winnerDetails.innerHTML = `
+        <p><strong class="text-yellow-400">Name:</strong> ${escapeHtml(winner.name)}</p>
+        <p><strong class="text-yellow-400">Phone:</strong> ${escapeHtml(winner.phone)}</p>
+        <p><strong class="text-yellow-400">Gender:</strong> ${escapeHtml(winner.gender)}</p>
+      `;
+      winnerModal.classList.add('show');
+      launchConfetti();
+    }
+    function hideWinner(){ winnerModal.classList.remove('show'); }
+
+    function launchConfetti() {
+      confettiContainer.innerHTML = '';
+      for (let i = 0; i < 100; i++) {
+        const confetti = document.createElement('div');
+        confetti.classList.add('confetti');
+        confetti.style.left = `${Math.random() * 100}vw`;
+        confetti.style.top = `${-20 - Math.random() * 20}px`;
+        confetti.style.backgroundColor = colors[Math.floor(Math.random()*colors.length)];
+        confetti.style.animationDelay = `${Math.random() * 2}s`;
+        confetti.style.transform = `scale(${Math.random() * 0.5 + 0.5})`;
+        confettiContainer.appendChild(confetti);
+      }
+    }
+
+    // small helper to avoid HTML injection in winner details
+    function escapeHtml(s){
+      return String(s).replace(/[&<>"']/g, function(m){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]; });
+    }
+
+    // ---- Go home / reset ----
+    function goHomeAndReset(){
+      if (currentSpin && currentSpin.fallbackTimeout) clearTimeout(currentSpin.fallbackTimeout);
+      currentSpin = null;
+      isSpinning = false;
+      players = [];
+      savePlayersToStorage();
+      updatePlayerList();
+      hideWinner();
+      showPlayerEntrySection();
+      spinButton.disabled = false;
+      backButton.disabled = false;
+      wheelCanvas.style.transition = 'none';
+      wheelCanvas.style.transform = 'rotate(0deg)';
+      setTimeout(()=> { wheelCanvas.style.transition = 'transform 0.2s linear'; }, 50);
+    }
+
+    // ---- Events ----
+    window.addEventListener('load', () => { loadPlayersFromStorage(); resizeCanvas(); });
+    window.addEventListener('resize', resizeCanvas);
+    playerForm.addEventListener('submit', handleAddPlayer);
+    nextButton.addEventListener('click', showWheelSection);
+    backButton.addEventListener('click', showPlayerEntrySection);
+    spinButton.addEventListener('click', spinWheel);
+    homeResetButton.addEventListener('click', goHomeAndReset);
+
+    // redraw wheel when storage loads or players change
+    // (already handled in updatePlayerList and resizeCanvas)
+
+  </script>
+</body>
+</html>
