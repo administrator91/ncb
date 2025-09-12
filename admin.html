@@ -30,7 +30,7 @@
       border:1px solid #fca311;
       border-radius:1rem;
       box-shadow:0 10px 35px rgba(252,163,17,0.2);
-      width:95%;
+      width:92%;
       max-width:450px;
       backdrop-filter: blur(10px);
       animation: fadeIn .5s ease-out;
@@ -123,7 +123,11 @@
             </select>
           </div>
 
-          <button type="submit" class="w-full btn bg-yellow-600 hover:bg-yellow-500 text-black font-bold py-2 px-4 rounded-lg !mt-3 text-sm">Add Player</button>
+         <!-- <button type="submit" class="w-full btn bg-yellow-600 hover:bg-yellow-500 text-black font-bold py-2 px-4 rounded-lg !mt-3 text-sm">Add Player</button>  -->
+          <button type="submit" class="w-full btn bg-yellow-600 hover:bg-yellow-500 text-black font-bold py-2 px-4 rounded-[3.5rem] !mt-3 text-sm">
+  Add Player
+</button>
+
         </form>
       </div>
 
@@ -155,7 +159,9 @@
 
   <div id="winner-modal" class="winner-modal">
     <div class="confetti-container"></div>
-    <div class="card text-center relative z-10 w-full max-w-md p-6 sm:p-8">
+<!--    <div class="card text-center relative z-10 w-full max-w-md p-6 sm:p-8">  -->
+    <div class="card text-center relative z-10 w-full max-w-[30rem] p-6 sm:p-8">
+
       <h2 class="text-4xl sm:text-5xl font-bold text-yellow-400 animate-pulse mb-4 brand-name">Congratulations!</h2>
       <div id="winner-details" class="text-white space-y-2 text-lg"></div>
       <button id="home-reset-button" class="mt-6 btn bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-2 px-4 rounded-lg">Home & Reset</button>
@@ -455,3 +461,4 @@
   </script>
 </body>
 </html>
+
