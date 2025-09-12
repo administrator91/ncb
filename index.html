@@ -4,12 +4,62 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="icon" type="image/png" href="logo2.png" />
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@700&display=swap" rel="stylesheet">
 <title>Natabari Crispi Biriyani</title>
 <style>
-    /* --- Preloader Styles (Optimized for Smoothness) --- */
+    html, body {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        height: 100%;
+        overflow: hidden; /* ✅ No scrollbars at all */
+    }
+
+    body {
+        font-family: Arial, sans-serif;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+        padding-top: 3vh;
+        background-color: #f0f0f0;
+        background-image: 
+            linear-gradient(
+                45deg,
+                rgba(255, 165, 0, 0.2) 25%,
+                transparent 25%,
+                transparent 75%,
+                rgba(255, 165, 0, 0.2) 75%
+            ),
+            linear-gradient(
+                -45deg,
+                rgba(255, 69, 0, 0.2) 25%,
+                transparent 25%,
+                transparent 75%,
+                rgba(255, 69, 0, 0.2) 75%
+            ),
+            /* --- Existing second background layer --- */
+            linear-gradient(
+                135deg,
+                rgba(255, 215, 0, 0.1) 25%,
+                transparent 25%,
+                transparent 75%,
+                rgba(255, 215, 0, 0.1) 75%
+            );
+        background-size: 40px 40px, 40px 40px, 60px 60px; /* Different size for the new layer */
+        animation: moveGrid 20s linear infinite, moveGrid2 30s linear infinite; /* Two animations */
+    }
+
+    @keyframes moveGrid {
+        from { background-position: 0 0, 0 0, 0 0; } /* Only first two layers move this way */
+        to { background-position: 40px 40px, -40px 40px, 0 0; }
+    }
+
+    /* --- Existing animation for the third background layer --- */
+    @keyframes moveGrid2 {
+        from { background-position: 0 0, 0 0, 0 0; } /* Only third layer moves this way */
+        to { background-position: 0 0, 0 0, -60px -60px; }
+    }
+
     /* --- Preloader Styles (Updated for clearer fireflies) --- */
     .preloader-container {
         position: fixed;
@@ -89,47 +139,8 @@
         50% { box-shadow: 0 0 12px rgba(255, 180, 0, 1), 0 0 22px rgba(255, 90, 0, 0.9), 0 0 32px rgba(255, 0, 0, 0.7); }
         100% { box-shadow: 0 0 10px rgba(255, 215, 0, 1), 0 0 20px rgba(255, 140, 0, 0.8), 0 0 30px rgba(255, 69, 0, 0.6); }
     }
-   
-
-    /* --- Original Styles --- */
-    html, body {
-        margin: 0;
-        padding: 0;
-        width: 100%;
-        height: 100%;
-        overflow: hidden;
-    }
-
-    body {
-        font-family: Arial, sans-serif;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: flex-start;
-        padding-top: 3vh;
-        background-color: #f0f0f0;
-        background-image: linear-gradient(
-            45deg,
-            rgba(255, 165, 0, 0.2) 25%,
-            transparent 25%,
-            transparent 75%,
-            rgba(255, 165, 0, 0.2) 75%
-        ),
-        linear-gradient(
-            -45deg,
-            rgba(255, 69, 0, 0.2) 25%,
-            transparent 25%,
-            transparent 75%,
-            rgba(255, 69, 0, 0.2) 75%
-        );
-        background-size: 40px 40px;
-        animation: moveGrid 20s linear infinite;
-    }
-
-    @keyframes moveGrid {
-        from { background-position: 0 0; }
-        to { background-position: 40px 40px; }
-    }
+    
+    /* --- Main Content Styles (Unchanged) --- */
 
     .content-wrapper {
         display: flex;
@@ -138,7 +149,15 @@
         width: 95%;
         box-sizing: border-box;
         padding: 1vh 1vw;
-        max-height: 100%;
+        max-height: 100%; /* ✅ Ensures no overflow */
+        display: none; /* Hide content initially */
+        opacity: 0; /* Start hidden for fade-in */
+        transition: opacity 1.5s ease-in; /* Fade in main content */
+    }
+    
+    .content-visible {
+      display: flex;
+      opacity: 1;
     }
 
     .brand-name {
@@ -154,10 +173,11 @@
         margin-bottom: 1vh;
     }
 
-    @keyframes glow {
-        from { box-shadow: 0 0 5px rgba(255, 165, 0, 0.7); }
-        to { box-shadow: 0 0 20px rgba(255, 165, 0, 0.9); }
-    }
+    /* Keep the original glow animation for brand-name if desired,
+       or apply a different text-glow as per previous versions for consistency */
+    /* @keyframes glow is defined above for preloader-image, affecting brand-name too.
+       If you want a different glow for brand-name, rename one of them or adjust. */
+
 
     .menu-image-container {
         display: flex;
@@ -169,19 +189,18 @@
     }
 
     .menu-image {
-        max-height: 65vh;
+        max-height: 65vh; /* ✅ Resized for no overflow */
         max-width: 100%;
         height: auto;
         display: block;
         border-radius: 10px;
     }
     @media (max-width: 400px) {
-    .menu-image {
-        width: 92%;
-        max-width: 92%;
+        .menu-image {
+            width: 92%;   /* Adjust for very small phones */
+            max-width: 92%;
+        }
     }
-}
-
 
     .share-button {
         background: #ff4500;
@@ -225,13 +244,12 @@
 </style>
 </head>
 <body>
-
 <div class="preloader-container" id="preloader">
     <div class="fireflies-container" id="fireflies"></div>
-    <img src="preloader.png" alt="Durga Puja Festival Art" class="preloader-image">
+    <img src="image_007658.png" alt="Durga Puja Festival Art" class="preloader-image">
 </div>
 
-<div class="content-wrapper">
+<div class="content-wrapper" id="main-content">
     <h1 class="brand-name">_Natabari Crispi Biriyani_</h1>
     <div class="menu-image-container">
         <img src="menu.png" alt="Natabari Crispi Biriyani Menu" class="menu-image">
@@ -247,8 +265,7 @@
 </div>
 
 <script>
-// Preloader Script
- document.addEventListener("DOMContentLoaded", function() {
+    document.addEventListener("DOMContentLoaded", function() {
         const preloader = document.getElementById("preloader");
         const mainContent = document.getElementById("main-content");
         const firefliesContainer = document.getElementById("fireflies");
@@ -303,55 +320,38 @@
         });
     });
 
-function shareMenu() {
-    const menuTitle = "🍴 Natabari Crispi Biriyani 🍴";
-    const menuUrl = window.location.href;
+    function shareMenu() {
+        const menuTitle = "🍴 Natabari Crispi Biriyani 🍴";
+        const menuUrl = window.location.href;
 
-    const messages = [
-        "✨ Every bite is a journey, every spice a story. Discover the magic of Natabari Crispi Biriyani 🍗💫",
-        "🌟 Experience biriyani that’s fit for kings! Natabari Crispi Biriyani – because you deserve the royal taste 🍴💎",
-        "🔥 Warning: One plate of Natabari Crispi Biriyani may cause extreme cravings & unlimited smiles 😋💛",
-        "🍗 Your taste buds called… they’re begging for Natabari Crispi Biriyani 🤤✨",
-        "❤️ Dil ka sukoon + pet ka pyaar = Natabari Crispi Biriyani! Ek baar khaoge, bhool nahi paoge 🔥",
-        "🌿 More than food, it’s a feeling. Natabari Crispi Biriyani – where love meets flavor 🍴✨",
-        "⚡ Mood off? Don’t worry – one bite of Natabari Crispi Biriyani = mood set 🔥💯",
-        "💫 Not just a meal, it’s an unforgettable memory. Natabari Crispi Biriyani 🥘✨",
-        "😋 Flavors so rich, they’ll melt your heart. Taste happiness at Natabari Crispi Biriyani 💛🔥",
-        "🌸 Biriyani that speaks the language of love 💌 Natabari Crispi Biriyani – share the magic today 🍽️",
-        "🥘 One plate, endless happiness. Share the joy of Natabari Crispi Biriyani ✨❤️"
-    ];
+        const messages = [
+            "✨ Every bite is a journey, every spice a story. Discover the magic of Natabari Crispi Biriyani 🍗💫",
+            "🌟 Experience biriyani that’s fit for kings! Natabari Crispi Biriyani – because you deserve the royal taste 🍴💎",
+            "🔥 Warning: One plate of Natabari Crispi Biriyani may cause extreme cravings & unlimited smiles 😋💛",
+            "🍗 Your taste buds called… they’re begging for Natabari Crispi Biriyani 🤤✨",
+            "❤️ Dil ka sukoon + pet ka pyaar = Natabari Crispi Biriyani! Ek baar khaoge, bhool nahi paoge 🔥",
+            "🌿 More than food, it’s a feeling. Natabari Crispi Biriyani – where love meets flavor 🍴✨",
+            "⚡ Mood off? Don’t worry – one bite of Natabari Crispi Biriyani = mood set 🔥💯",
+            "💫 Not just a meal, it’s an unforgettable memory. Natabari Crispi Biriyani 🥘✨",
+            "😋 Flavors so rich, they’ll melt your heart. Taste happiness at Natabari Crispi Biriyani 💛🔥",
+            "🌸 Biriyani that speaks the language of love 💌 Natabari Crispi Biriyani – share the magic today 🍽️",
+            "🥘 One plate, endless happiness. Share the joy of Natabari Crispi Biriyani ✨❤️"
+        ];
 
-    const randomMessage = messages[Math.floor(Math.random() * messages.length)];
+        const randomMessage = messages[Math.floor(Math.random() * messages.length)];
 
-    if (navigator.share) {
-        navigator.share({
-            title: menuTitle,
-            text: randomMessage,
-            url: menuUrl
-        })
-        .then(() => console.log("Shared successfully 💌"))
-        .catch(console.error);
-    } else {
-        alert("💫 Share the flavor! Copy this link → " + menuUrl);
+        if (navigator.share) {
+            navigator.share({
+                title: menuTitle,
+                text: randomMessage,
+                url: menuUrl
+            })
+            .then(() => console.log("Shared successfully 💌"))
+            .catch(console.error);
+        } else {
+            alert("💫 Share the flavor! Copy this link → " + menuUrl);
+        }
     }
-}
 </script>
-    
-<!--
-<script>
-function shareMenu() {
-    const menuTitle = "Natabari Crispi Biriyani Menu!";
-    const menuUrl = window.location.href;
-    if (navigator.share) {
-        navigator.share({title: menuTitle,text: "Check out the delicious menu from Natabari Crispi Biriyani!",url: menuUrl})
-        .then(() => console.log('Thanks for sharing!')).catch(console.error);
-    } else {
-        alert("To share, please copy this link and paste it on your social media: " + menuUrl);
-    }
-}
-</script>
-    -->
-    
 </body>
 </html>
-
