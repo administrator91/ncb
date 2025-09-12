@@ -10,54 +10,85 @@
 <title>Natabari Crispi Biriyani</title>
 <style>
     /* --- Preloader Styles (Optimized for Smoothness) --- */
-    .preloader {
+    /* --- Preloader Styles (Updated for clearer fireflies) --- */
+    .preloader-container {
         position: fixed;
         top: 0;
         left: 0;
         width: 100%;
         height: 100%;
-        background-color: #fef5e7;
+        background: #0a111a; /* Darker, solid color for preloader */
         display: flex;
-        justify-content: center;
         align-items: center;
-        z-index: 9999;
-        flex-direction: column;
-        transition: opacity 1s ease, visibility 1s ease;
+        justify-content: center;
+        z-index: 1000;
+        transition: opacity 1.5s ease-out; /* Slower fade-out */
+        perspective: 1000px; /* For 3D transforms for fireflies */
     }
 
-    .preloader.hidden {
+    .preloader-hidden {
         opacity: 0;
-        visibility: hidden;
-    }
-
-    .preloader-text {
-        font-family: 'Hind Siliguri', sans-serif;
-        font-size: clamp(2.5rem, 10vw, 4rem);
-        font-weight: 700;
-        color: #e63946;
-        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
-        
-        /* --- OPTIMIZATION --- */
-        
-        animation: breatheText 2.8s infinite ease-in-out;
-        /* Telling the browser to use the GPU for this animation */
-        will-change: transform, opacity; 
+        pointer-events: none;
     }
     
-
-    
-    
-    @keyframes breatheText {
-        0%, 100% {
-            transform: scale(1);
-            opacity: 0.8;
-        }
-        50% {
-            transform: scale(1.05);
-            opacity: 1;
-        }
+    .preloader-image {
+        max-width: 60%;
+        max-height: 60%;
+        position: relative; /* Essential for z-index over fireflies */
+        animation: breathe 4s ease-in-out infinite alternate; /* Gentle breathing effect */
+        filter: drop-shadow(0 0 15px rgba(255,140,0,0.7)) drop-shadow(0 0 30px rgba(255,69,0,0.5)); /* Subtle overall glow */
     }
 
+    @keyframes breathe {
+        0% { transform: scale(0.98); opacity: 0.9; }
+        100% { transform: scale(1.02); opacity: 1; }
+    }
+
+    /* --- Firefly/Sparkle Animation (Enhanced) --- */
+    .fireflies-container {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none; /* Allows clicks to pass through */
+        overflow: hidden;
+    }
+
+    .firefly {
+        position: absolute;
+        background-color: rgba(255, 215, 0, 0.9); /* Brighter Gold/Orange glow */
+        border-radius: 50%;
+        /* Enhanced box-shadow for a more visible glow */
+        box-shadow: 0 0 10px rgba(255, 215, 0, 1), /* Inner bright glow */
+                    0 0 20px rgba(255, 140, 0, 0.8), /* Outer wider glow */
+                    0 0 30px rgba(255, 69, 0, 0.6); /* Even wider, softer glow */
+        opacity: 0; /* Start invisible */
+        animation: fireflyMove var(--duration) linear infinite, 
+                   fireflyFade var(--fade-duration) ease-in-out infinite alternate,
+                   fireflyColorShift 3s ease-in-out infinite alternate; /* New color shift */
+    }
+
+    @keyframes fireflyMove {
+        0% { transform: translate(var(--x-start), var(--y-start)) scale(var(--size)); }
+        25% { transform: translate(calc(var(--x-start) + var(--x-rand-1)), calc(var(--y-start) + var(--y-rand-1))) scale(var(--size)); }
+        50% { transform: translate(calc(var(--x-start) + var(--x-rand-2)), calc(var(--y-start) + var(--y-rand-2))) scale(var(--size)); }
+        75% { transform: translate(calc(var(--x-start) + var(--x-rand-3)), calc(var(--y-start) + var(--y-rand-3))) scale(var(--size)); }
+        100% { transform: translate(var(--x-start), var(--y-start)) scale(var(--size)); }
+    }
+
+    @keyframes fireflyFade {
+        0%, 100% { opacity: 0.2; } /* Start with a minimum visible opacity */
+        20% { opacity: 0.8; }
+        50% { opacity: 1; } /* Fully visible at peak brightness */
+        80% { opacity: 0.8; }
+    }
+
+    @keyframes fireflyColorShift {
+        0% { box-shadow: 0 0 10px rgba(255, 215, 0, 1), 0 0 20px rgba(255, 140, 0, 0.8), 0 0 30px rgba(255, 69, 0, 0.6); }
+        50% { box-shadow: 0 0 12px rgba(255, 180, 0, 1), 0 0 22px rgba(255, 90, 0, 0.9), 0 0 32px rgba(255, 0, 0, 0.7); }
+        100% { box-shadow: 0 0 10px rgba(255, 215, 0, 1), 0 0 20px rgba(255, 140, 0, 0.8), 0 0 30px rgba(255, 69, 0, 0.6); }
+    }
    
 
     /* --- Original Styles --- */
@@ -195,9 +226,9 @@
 </head>
 <body>
 
-<div class="preloader">
-    
-    <h2 class="preloader-text">🌸শুভ শারদীয়া🌸</h2>
+<div class="preloader-container" id="preloader">
+    <div class="fireflies-container" id="fireflies"></div>
+    <img src="preloader.png" alt="Durga Puja Festival Art" class="preloader-image">
 </div>
 
 <div class="content-wrapper">
@@ -211,19 +242,66 @@
 </a>
  on <b>FB</b></p>
     <p style="font-family: 'Dancing Script', cursive; font-size: 1rem; color: #ff1493; text-align: center; margin-top: 2px;">
-    <b>🌸 Crafted with Care by Akash Sarkar 🌸</b>
+    🌸 Crafted with Care by Akash Sarkar 🌸
     </p>
 </div>
 
 <script>
 // Preloader Script
-window.addEventListener('load', () => {
-    const preloader = document.querySelector('.preloader');
-    // Set a minimum time for the preloader to be visible
-    setTimeout(() => {
-        preloader.classList.add('hidden');
-    }, 1800); // 1.8 seconds
-});
+ document.addEventListener("DOMContentLoaded", function() {
+        const preloader = document.getElementById("preloader");
+        const mainContent = document.getElementById("main-content");
+        const firefliesContainer = document.getElementById("fireflies");
+        const numFireflies = 40; // Increased number of fireflies for more visibility
+
+        // Create fireflies dynamically
+        for (let i = 0; i < numFireflies; i++) {
+            const firefly = document.createElement("span");
+            firefly.classList.add("firefly");
+
+            const size = Math.random() * 4 + 4; // Size between 4px and 8px for better visibility
+            firefly.style.width = `${size}px`;
+            firefly.style.height = `${size}px`;
+            
+            // Random start position within the visible viewport
+            const xStart = Math.random() * 100 + "vw";
+            const yStart = Math.random() * 100 + "vh";
+            firefly.style.left = xStart;
+            firefly.style.top = yStart;
+
+            // Random movement within a range (slightly increased for more visible flight)
+            firefly.style.setProperty("--x-start", xStart);
+            firefly.style.setProperty("--y-start", yStart);
+            firefly.style.setProperty("--x-rand-1", `${(Math.random() - 0.5) * 70}px`);
+            firefly.style.setProperty("--y-rand-1", `${(Math.random() - 0.5) * 70}px`);
+            firefly.style.setProperty("--x-rand-2", `${(Math.random() - 0.5) * 100}px`);
+            firefly.style.setProperty("--y-rand-2", `${(Math.random() - 0.5) * 100}px`);
+            firefly.style.setProperty("--x-rand-3", `${(Math.random() - 0.5) * 80}px`);
+            firefly.style.setProperty("--y-rand-3", `${(Math.random() - 0.5) * 80}px`);
+            firefly.style.setProperty("--size", `${size/5}`); // Scale factor for the size animation
+
+            // Random animation duration and delay
+            firefly.style.setProperty("--duration", `${Math.random() * 10 + 10}s`); // 10-20s for movement
+            firefly.style.setProperty("--fade-duration", `${Math.random() * 3 + 2}s`); // 2-5s for fade
+            firefly.style.animationDelay = `${Math.random() * 5}s`;
+
+            firefliesContainer.appendChild(firefly);
+        }
+
+        // Ensure all resources, including images, are fully loaded before hiding the preloader
+        window.addEventListener("load", function() {
+            setTimeout(() => {
+                preloader.style.opacity = "0";
+                setTimeout(() => {
+                    preloader.style.display = "none";
+                    mainContent.style.display = "flex";
+                    setTimeout(() => {
+                        mainContent.classList.add("content-visible"); // Fade in main content
+                    }, 50); // Small delay to allow display:flex to apply before opacity transition
+                }, 1500); // Wait for the fade-out transition to complete (1.5s)
+            }, 1000); // Small delay to show the animation before fading out
+        });
+    });
 
 function shareMenu() {
     const menuTitle = "🍴 Natabari Crispi Biriyani 🍴";
@@ -276,4 +354,3 @@ function shareMenu() {
     
 </body>
 </html>
-
